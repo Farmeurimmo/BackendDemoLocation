@@ -23,8 +23,11 @@ docker run -d -p 8080:8080 \
     -e DB_PASSWORD="123456789" \
     --name backenddemolocation \
     --restart always \
-    ghcr.io/abdelalielbahloul/backenddemolocation:latest
+    farmeurimmo/backend-demo-location:latest
 ```
+
+Dans mon cas, cloudflare sert de reverse proxy pour rediriger les requêtes vers le serveur donc je n'ouvre pas le port 8080. 
+Je dois les mettre dans un même réseau docker.
 
 ## Développement (sous linux)
 
