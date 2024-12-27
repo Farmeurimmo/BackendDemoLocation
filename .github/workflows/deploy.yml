@@ -49,4 +49,5 @@ jobs:
 
     - name: Trigger webhook
       if: success()
-      run: curl -X POST -H "Content-Type: application/json" -d '{"status": "success"}' "${{ secrets.WEBHOOK_URL }}"
+      run: |
+        curl -X POST -H "Content-Type: application/json" -d '{"status": "success"}' "${{ secrets.WEBHOOK_URL }}"
