@@ -21,7 +21,7 @@ public class BackendApp {
             System.out.println("Application has started.");
         } catch (Exception e) {
             System.out.println("Failed to start the application.");
-            e.printStackTrace(); // Print the stack trace for more details
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
