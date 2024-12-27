@@ -16,6 +16,8 @@ Technologies utilisées :
 
 ## Déploiement sur un serveur
 
+**Actuellement déployé sur un de mes serveurs à cette adresse : [https://backend-demo-location.farmeurimmo.fr](https://backend-demo-location.farmeurimmo.fr)**
+
 Il faut d'abord créer une base de données MySQL. (un docker-compose est fourni plus bas si jamais)
 
 ```bash
@@ -63,7 +65,7 @@ services:
     environment:
       DB_URL: jdbc:mysql://db:3306/backenddemolocation
       DB_USERNAME: backenddemolocation
-      DB_PASSWORD: 123456789
+      DB_PASSWORD: 123456789 # à changer
     networks:
       - db
       - cloudflared
