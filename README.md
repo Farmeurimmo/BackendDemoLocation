@@ -9,14 +9,15 @@ Technologies utilisées :
 - Lombok
 - Github actions
 - Docker
+- Portainer (Webhook pour le déploiement automatique)
 
 ## Déploiement Automatique (CI/CD)
 
-À chaque push sur la branche `master`, une nouvelle image Docker est construite et déployée sur le hub Docker.
+À chaque push sur la branche `master`, une nouvelle image Docker est construite et déployée sur le hub Docker (https://hub.docker.com/r/farmeurimmo/backend-demo-location).
 
 ## Déploiement sur un serveur
 
-**Actuellement déployé sur un de mes serveurs à cette adresse : [https://backend-demo-location.farmeurimmo.fr](https://backend-demo-location.farmeurimmo.fr)**
+**Actuellement déployé sur un de mes serveurs à cette adresse : https://hub.docker.com/r/farmeurimmo/backend-demo-location**
 
 Il faut d'abord créer une base de données MySQL. (un docker-compose est fourni plus bas si jamais)
 
