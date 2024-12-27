@@ -17,7 +17,7 @@ Technologies utilisées :
 
 ## Déploiement sur un serveur
 
-**Actuellement déployé sur un de mes serveurs à cette adresse : https://hub.docker.com/r/farmeurimmo/backend-demo-location**
+**Actuellement déployé sur un de mes serveurs à cette adresse : https://backend-demo-location.farmeurimmo.fr/**
 
 Il faut d'abord créer une base de données MySQL. (un docker-compose est fourni plus bas si jamais)
 
