@@ -1,6 +1,5 @@
 package fr.farmeurimmo.backenddemolocation;
 
-import fr.farmeurimmo.backenddemolocation.database.DatabaseManager;
 import jakarta.annotation.PreDestroy;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,8 +29,6 @@ public class BackendApp {
     @PreDestroy
     public void onShutdown() {
         System.out.println("Application is shutting down...");
-
-        DatabaseManager.INSTANCE.close();
 
         System.out.println("Application has been shut down.");
     }
