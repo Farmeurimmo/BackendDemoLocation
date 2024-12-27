@@ -1,13 +1,14 @@
 # Backend site Demo location
 
 Technologies utilisées :
+
 - Spring Boot
 - Spring Data JPA
 - Spring Security
 - MySQL (with HikariCP)
 - Lombok
 
-## Développement
+## Développement (sous linux)
 
 ```bash
 # remplacez les valeurs par les vôtres

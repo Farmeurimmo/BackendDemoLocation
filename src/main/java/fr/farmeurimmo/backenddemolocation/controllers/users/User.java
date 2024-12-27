@@ -1,5 +1,6 @@
 package fr.farmeurimmo.backenddemolocation.controllers.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,7 @@ public class User {
     private String email;
 
     @Column(name = "hashed_password", nullable = false)
+    @JsonIgnore
     private String hashedPassword;
 
     @Column(name = "api_key", nullable = false)

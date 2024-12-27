@@ -39,6 +39,16 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
             }
             return;
         }
+        if (request.getMethod().equals(HttpMethod.GET.name())) {
+            if (request.getRequestURI().equals("/users/validate")) {
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(null, null, Collections.emptyList());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
 
         String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
 

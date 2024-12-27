@@ -16,6 +16,7 @@ import java.util.UUID;
 @RequestMapping("/users")
 public class UserController {
 
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Autowired
     private UserService userService;
 
@@ -32,7 +33,7 @@ public class UserController {
         return UUID.fromString(formattedHex);
     }
 
-    @GetMapping("/{email}")
+    @GetMapping(path = "/{email}")
     public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
         Optional<User> user = userService.getUserByEmail(email);
 
@@ -43,15 +44,13 @@ public class UserController {
         return ResponseEntity.status(404).body("User not found");
     }
 
-    @PutMapping("/{uuid}")
+    @PutMapping(path = "/{uuid}")
     public User updateUser(@PathVariable String uuid, @RequestBody User updatedUser) {
         return userService.updateUser(convertHexToUUID(uuid), updatedUser);
     }
 
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody CreateUserDTO newUser) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
         String hashedPassword = passwordEncoder.encode(newUser.password());
 
         SecureRandom secureRandom = new SecureRandom();
@@ -65,5 +64,16 @@ public class UserController {
 
         return ResponseEntity.status(200).body(userService.createUser(new User(newUser.lastName(), newUser.firstName(),
                 newUser.email(), hashedPassword, apiKey, 0, System.currentTimeMillis(), System.currentTimeMillis())));
+    }
+
+    @GetMapping(value = "/validate")
+    public ResponseEntity<?> validateUserPassword(@RequestParam String email, @RequestParam String password) {
+        Optional<User> user = userService.getUserByEmail(email);
+
+        if (user.isPresent() && passwordEncoder.matches(password, user.get().getHashedPassword())) {
+            return ResponseEntity.status(200).body(user.get());
+        }
+
+        return ResponseEntity.status(401).body("Invalid email or password");
     }
 }
