@@ -42,7 +42,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         boolean isDev = System.getenv("IN_PROD") == null;
         registry.addMapping("/**")
-                .allowedOriginPatterns("https://frontend-demo-app.farmeurimmo.fr", (isDev ? "http://localhost:5173" : ""))
+                .allowedOriginPatterns("https://frontend-demo-location.farmeurimmo.fr/", (isDev ? "http://localhost:5173" : ""))
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
     }
 }
