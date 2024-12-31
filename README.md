@@ -13,7 +13,8 @@ Technologies utilisées :
 
 ## Déploiement Automatique (CI/CD)
 
-À chaque push sur la branche `master`, une nouvelle image Docker est construite et déployée sur le hub Docker (https://hub.docker.com/r/farmeurimmo/backend-demo-location).
+À chaque push sur la branche `master`, une nouvelle image Docker est construite et déployée sur le hub
+Docker (https://hub.docker.com/r/farmeurimmo/backend-demo-location).
 
 ## Déploiement sur un serveur
 
@@ -26,12 +27,14 @@ docker run -d -p 8080:8080 \
     -e DB_URL="jdbc:mysql://localhost:3306/backenddemolocation" \
     -e DB_USERNAME="root" \
     -e DB_PASSWORD="123456789" \
+    -e IN_PROD="nothing" \
     --name backenddemolocation \
     --restart always \
     farmeurimmo/backend-demo-location:latest
 ```
 
-Dans mon cas, cloudflare sert de reverse proxy pour rediriger les requêtes vers le serveur donc je n'ouvre pas le port 8080. 
+Dans mon cas, cloudflare sert de reverse proxy pour rediriger les requêtes vers le serveur donc je n'ouvre pas le port
+8080.
 Je dois les mettre dans un même réseau docker.
 
 ```docker-compose
@@ -67,6 +70,7 @@ services:
       DB_URL: jdbc:mysql://db:3306/backenddemolocation
       DB_USERNAME: backenddemolocation
       DB_PASSWORD: 123456789 # à changer
+      IN_PROD: "nothing"
     networks:
       - db
       - cloudflared
