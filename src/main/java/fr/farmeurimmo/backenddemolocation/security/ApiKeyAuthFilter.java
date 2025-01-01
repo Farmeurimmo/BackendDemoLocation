@@ -28,26 +28,23 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        if (request.getMethod().equals(HttpMethod.POST.name()) || request.getMethod().equals(HttpMethod.OPTIONS.name())) {
-            if (request.getRequestURI().equals("/users")) {
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(null, null, Collections.emptyList());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+        String method = request.getMethod();
+        if ((method.equals(HttpMethod.POST.name()) || method.equals(HttpMethod.OPTIONS.name())) && request.getRequestURI().startsWith("/users")) {
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(null, null, Collections.emptyList());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                filterChain.doFilter(request, response);
-                return;
-            }
+            filterChain.doFilter(request, response);
             return;
         }
-        if (request.getMethod().equals(HttpMethod.GET.name())) {
-            if (request.getRequestURI().equals("/users/validate")) {
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(null, null, Collections.emptyList());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                filterChain.doFilter(request, response);
-                return;
-            }
+        if (method.equals(HttpMethod.GET.name()) && request.getRequestURI().startsWith("/users/validate")) {
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(null, null, Collections.emptyList());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            filterChain.doFilter(request, response);
+            return;
         }
 
         String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
