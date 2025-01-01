@@ -1,5 +1,7 @@
 package fr.farmeurimmo.backenddemolocation.controllers.users;
 
+import fr.farmeurimmo.backenddemolocation.dtos.CreateUserDTO;
+import fr.farmeurimmo.backenddemolocation.dtos.ValidateUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,11 +68,11 @@ public class UserController {
                 newUser.email(), hashedPassword, apiKey, 0, System.currentTimeMillis(), System.currentTimeMillis())));
     }
 
-    @GetMapping(value = "/validate")
-    public ResponseEntity<?> validateUserPassword(@RequestParam String email, @RequestParam String password) {
-        Optional<User> user = userService.getUserByEmail(email);
+    @PostMapping(value = "/validate")
+    public ResponseEntity<?> validateUserPassword(@RequestBody ValidateUserDTO validateUserDTO) {
+        Optional<User> user = userService.getUserByEmail(validateUserDTO.email());
 
-        if (user.isPresent() && passwordEncoder.matches(password, user.get().getHashedPassword())) {
+        if (user.isPresent() && passwordEncoder.matches(validateUserDTO.password(), user.get().getHashedPassword())) {
             return ResponseEntity.status(200).body(user.get());
         }
 
