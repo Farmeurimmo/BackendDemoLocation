@@ -1,5 +1,6 @@
 package fr.farmeurimmo.backenddemolocation.controllers.users;
 
+import fr.farmeurimmo.backenddemolocation.dtos.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,6 @@ public class UserService {
             user.setHashedPassword(updatedUser.getHashedPassword());
             user.setApiKey(updatedUser.getApiKey());
             user.setRole(updatedUser.getRole());
-            user.setUpdatedAt(System.currentTimeMillis());
             return userRepository.save(user);
         }).orElseThrow(() -> new RuntimeException("User not found"));
     }

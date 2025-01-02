@@ -1,7 +1,8 @@
 package fr.farmeurimmo.backenddemolocation.controllers.users;
 
-import fr.farmeurimmo.backenddemolocation.dtos.CreateUserDTO;
-import fr.farmeurimmo.backenddemolocation.dtos.ValidateUserDTO;
+import fr.farmeurimmo.backenddemolocation.dtos.users.CreateUserDTO;
+import fr.farmeurimmo.backenddemolocation.dtos.users.User;
+import fr.farmeurimmo.backenddemolocation.dtos.users.ValidateUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

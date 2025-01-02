@@ -1,4 +1,4 @@
-package fr.farmeurimmo.backenddemolocation.controllers.users;
+package fr.farmeurimmo.backenddemolocation.dtos.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -37,10 +37,10 @@ public class User {
     @Column(name = "role", nullable = false)
     private int role;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private long createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private long updatedAt;
 
     public User(String lastName, String firstName, String email, String hashedPassword, String apiKey, int role, long createdAt, long updatedAt) {

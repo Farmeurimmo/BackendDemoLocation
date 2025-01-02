@@ -1,7 +1,7 @@
 package fr.farmeurimmo.backenddemolocation.security;
 
-import fr.farmeurimmo.backenddemolocation.controllers.users.User;
 import fr.farmeurimmo.backenddemolocation.controllers.users.UserService;
+import fr.farmeurimmo.backenddemolocation.dtos.users.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
