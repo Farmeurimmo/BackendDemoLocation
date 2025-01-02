@@ -29,7 +29,6 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String method = request.getMethod();
-        System.out.println("Method: " + method + " URI: " + request.getRequestURI());
         if ((method.equals(HttpMethod.POST.name()) || method.equals(HttpMethod.OPTIONS.name())) && request.getRequestURI().startsWith("/users")) {
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(null, null, Collections.emptyList());
