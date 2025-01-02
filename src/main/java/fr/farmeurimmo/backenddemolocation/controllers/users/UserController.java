@@ -36,9 +36,13 @@ public class UserController {
         return UUID.fromString(formattedHex);
     }
 
-    @GetMapping(path = "/{email}")
-    public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
-        Optional<User> user = userService.getUserByEmail(email);
+    @GetMapping(path = "/{uuid}")
+    public ResponseEntity<?> getUserByUuid(@PathVariable String uuid) {
+        if (uuid == null) {
+            return ResponseEntity.status(400).body("Invalid UUID");
+        }
+
+        Optional<User> user = userService.getUserByUUID(convertHexToUUID(uuid));
 
         if (user.isPresent()) {
             return ResponseEntity.status(200).body(user.get());

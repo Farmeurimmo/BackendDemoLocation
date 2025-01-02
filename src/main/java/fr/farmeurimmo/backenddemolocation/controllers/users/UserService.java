@@ -23,6 +23,7 @@ public class UserService {
             user.setHashedPassword(updatedUser.getHashedPassword());
             user.setApiKey(updatedUser.getApiKey());
             user.setRole(updatedUser.getRole());
+            user.setUpdatedAt(System.currentTimeMillis());
             return userRepository.save(user);
         }).orElseThrow(() -> new RuntimeException("User not found"));
     }
@@ -35,6 +36,11 @@ public class UserService {
     @Transactional
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Transactional
+    public Optional<User> getUserByUUID(UUID uuid) {
+        return userRepository.findById(uuid);
     }
 
     @Transactional

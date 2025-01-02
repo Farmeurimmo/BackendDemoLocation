@@ -37,10 +37,10 @@ public class User {
     @Column(name = "role", nullable = false)
     private int role;
 
-    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_at", nullable = false, updatable = false)
     private long createdAt;
 
-    @Column(name = "updated_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Column(name = "updated_at", nullable = false)
     private long updatedAt;
 
     public User(String lastName, String firstName, String email, String hashedPassword, String apiKey, int role, long createdAt, long updatedAt) {

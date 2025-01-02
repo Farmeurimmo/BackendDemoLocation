@@ -32,10 +32,10 @@ public class Location {
     @Column(name = "front_image", nullable = false)
     private String frontImage;
 
-    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_at", nullable = false, updatable = false)
     private long createdAt;
 
-    @Column(name = "updated_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Column(name = "updated_at", nullable = false)
     private long updatedAt;
 
     public Location(UUID userUuid, String name, String description, String localization, String frontImage, long createdAt, long updatedAt) {
