@@ -42,6 +42,11 @@ public class LocationService {
     }
 
     @Transactional
+    public Iterable<Location> getLocationsByUserUUID(UUID uuid) {
+        return locationRepository.findAllByUserUuid(uuid);
+    }
+
+    @Transactional
     public void deleteLocation(UUID uuid) {
         locationRepository.deleteById(uuid);
     }

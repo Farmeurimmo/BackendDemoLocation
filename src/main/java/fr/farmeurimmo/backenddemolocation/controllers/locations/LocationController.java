@@ -3,11 +3,13 @@ package fr.farmeurimmo.backenddemolocation.controllers.locations;
 import fr.farmeurimmo.backenddemolocation.controllers.users.UserService;
 import fr.farmeurimmo.backenddemolocation.dtos.locations.CreateLocationDTO;
 import fr.farmeurimmo.backenddemolocation.dtos.locations.Location;
+import fr.farmeurimmo.backenddemolocation.dtos.users.User;
+import fr.farmeurimmo.backenddemolocation.utils.UuidUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/locations")
@@ -20,9 +22,28 @@ public class LocationController {
     private UserService userService;
 
     @PostMapping
-    public Location createLocation(@RequestBody CreateLocationDTO newLocation) {
-        //TODO: Check if user exists
+    public ResponseEntity<?> createLocation(@RequestBody CreateLocationDTO newLocation) {
+        Optional<User> user = userService.getUserByUUID(newLocation.userUuid());
 
-        return locationService.createLocation(newLocation);
+        if (user.isEmpty()) {
+            return ResponseEntity.status(404).body("User not found");
+        }
+
+        return ResponseEntity.status(201).body(locationService.createLocation(newLocation));
+    }
+
+    @GetMapping(path = "/users/{uuid}")
+    public ResponseEntity<?> getLocationByUuid(@PathVariable String uuid) {
+        if (uuid == null) {
+            return ResponseEntity.status(400).body("Invalid UUID");
+        }
+
+        Iterable<Location> locations = locationService.getLocationsByUserUUID(UuidUtils.convertHexToUUID(uuid));
+
+        if (locations.iterator().hasNext()) {
+            return ResponseEntity.status(200).body(locations);
+        }
+
+        return ResponseEntity.status(404).body("No location found");
     }
 }

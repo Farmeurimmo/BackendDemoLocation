@@ -3,6 +3,7 @@ package fr.farmeurimmo.backenddemolocation.controllers.users;
 import fr.farmeurimmo.backenddemolocation.dtos.users.CreateUserDTO;
 import fr.farmeurimmo.backenddemolocation.dtos.users.User;
 import fr.farmeurimmo.backenddemolocation.dtos.users.ValidateUserDTO;
+import fr.farmeurimmo.backenddemolocation.utils.UuidUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
@@ -23,26 +23,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    public UUID convertHexToUUID(String hexString) {
-        if (hexString.startsWith("0x")) {
-            hexString = hexString.substring(2);
-        }
-
-        String formattedHex = hexString.replaceFirst(
-                "(\\p{XDigit}{8})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}+)",
-                "$1-$2-$3-$4-$5"
-        );
-
-        return UUID.fromString(formattedHex);
-    }
-
     @GetMapping(path = "/{uuid}")
     public ResponseEntity<?> getUserByUuid(@PathVariable String uuid) {
         if (uuid == null) {
             return ResponseEntity.status(400).body("Invalid UUID");
         }
 
-        Optional<User> user = userService.getUserByUUID(convertHexToUUID(uuid));
+        Optional<User> user = userService.getUserByUUID(UuidUtils.convertHexToUUID(uuid));
 
         if (user.isPresent()) {
             return ResponseEntity.status(200).body(user.get());
@@ -53,7 +40,7 @@ public class UserController {
 
     @PutMapping(path = "/{uuid}")
     public User updateUser(@PathVariable String uuid, @RequestBody User updatedUser) {
-        return userService.updateUser(convertHexToUUID(uuid), updatedUser);
+        return userService.updateUser(UuidUtils.convertHexToUUID(uuid), updatedUser);
     }
 
     @PostMapping
