@@ -21,6 +21,7 @@ public class LocationService {
             location.setDescription(updatedLocation.getDescription());
             location.setLocalization(updatedLocation.getLocalization());
             location.setFrontImage(updatedLocation.getFrontImage());
+            location.setCategory(updatedLocation.getCategory());
             location.setUpdatedAt(System.currentTimeMillis());
             return locationRepository.save(location);
         }).orElseThrow(() -> new RuntimeException("Location not found"));
@@ -34,6 +35,7 @@ public class LocationService {
                 newLocation.description(),
                 newLocation.localization(),
                 newLocation.frontImage(),
+                newLocation.category(),
                 System.currentTimeMillis(),
                 System.currentTimeMillis()
         );

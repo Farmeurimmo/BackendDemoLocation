@@ -32,18 +32,22 @@ public class Location {
     @Column(name = "front_image", nullable = false)
     private String frontImage;
 
+    @Column(name = "category", nullable = false)
+    private String category;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private long createdAt;
 
     @Column(name = "updated_at", nullable = false)
     private long updatedAt;
 
-    public Location(UUID userUuid, String name, String description, String localization, String frontImage, long createdAt, long updatedAt) {
+    public Location(UUID userUuid, String name, String description, String localization, String frontImage, String category, long createdAt, long updatedAt) {
         this.userUuid = userUuid;
         this.name = name;
         this.description = description;
         this.localization = localization;
         this.frontImage = frontImage;
+        this.category = category;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
