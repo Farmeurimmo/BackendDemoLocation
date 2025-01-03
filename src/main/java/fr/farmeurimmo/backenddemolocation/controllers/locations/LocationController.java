@@ -6,7 +6,9 @@ import fr.farmeurimmo.backenddemolocation.dtos.locations.Location;
 import fr.farmeurimmo.backenddemolocation.dtos.users.User;
 import fr.farmeurimmo.backenddemolocation.utils.UuidUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -23,6 +25,11 @@ public class LocationController {
 
     @PostMapping
     public ResponseEntity<?> createLocation(@RequestBody CreateLocationDTO newLocation) {
+        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!authenticatedUser.getUuid().equals(newLocation.userUuid())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to create a location for this user");
+        }
+
         Optional<User> user = userService.getUserByUUID(newLocation.userUuid());
 
         if (user.isEmpty()) {
