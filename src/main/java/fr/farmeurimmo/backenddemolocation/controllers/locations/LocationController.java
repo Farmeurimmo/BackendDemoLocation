@@ -53,4 +53,23 @@ public class LocationController {
 
         return ResponseEntity.status(404).body("No location found");
     }
+
+    @DeleteMapping(path = "/{uuid}")
+    public ResponseEntity<?> deleteLocation(@PathVariable String uuid) {
+        if (uuid == null) {
+            return ResponseEntity.status(400).body("Invalid UUID");
+        }
+
+        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Iterable<Location> locations = locationService.getLocationsByUserUUID(authenticatedUser.getUuid());
+
+        for (Location location : locations) {
+            if (location.getUuid().equals(UuidUtils.convertHexToUUID(uuid))) {
+                locationService.deleteLocation(location.getUuid());
+                return ResponseEntity.status(200).body("Location deleted");
+            }
+        }
+
+        return ResponseEntity.status(404).body("Location not found");
+    }
 }
