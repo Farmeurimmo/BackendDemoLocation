@@ -2,6 +2,7 @@ package fr.farmeurimmo.backenddemolocation.controllers.locations;
 
 import fr.farmeurimmo.backenddemolocation.dtos.locations.CreateLocationDTO;
 import fr.farmeurimmo.backenddemolocation.dtos.locations.Location;
+import fr.farmeurimmo.backenddemolocation.dtos.locations.UpdatedLocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,21 +16,21 @@ public class LocationService {
     private LocationRepository locationRepository;
 
     @Transactional
-    public Location updateLocation(UUID uuid, Location updatedLocation) {
+    public Location updateLocation(UUID uuid, UpdatedLocation updatedLocation) {
         return locationRepository.findById(uuid).map(location -> {
-            location.setName(updatedLocation.getName());
-            location.setDescription(updatedLocation.getDescription());
-            location.setLocalization(updatedLocation.getLocalization());
-            location.setFrontImage(updatedLocation.getFrontImage());
-            location.setCategory(updatedLocation.getCategory());
+            location.setName(updatedLocation.name());
+            location.setDescription(updatedLocation.description());
+            location.setLocalization(updatedLocation.localization());
+            location.setFrontImage(updatedLocation.frontImage());
+            location.setCategory(updatedLocation.category());
             location.setUpdatedAt(System.currentTimeMillis());
             return locationRepository.save(location);
-        }).orElseThrow(() -> new RuntimeException("Location not found"));
+        }).orElse(null);
     }
 
     @Transactional
     public Location createLocation(CreateLocationDTO newLocation) {
-        Location location = new Location(
+        return locationRepository.save(new Location(
                 newLocation.userUuid(),
                 newLocation.name(),
                 newLocation.description(),
@@ -38,9 +39,7 @@ public class LocationService {
                 newLocation.category(),
                 System.currentTimeMillis(),
                 System.currentTimeMillis()
-        );
-
-        return locationRepository.save(location);
+        ));
     }
 
     @Transactional

@@ -3,6 +3,7 @@ package fr.farmeurimmo.backenddemolocation.controllers.locations;
 import fr.farmeurimmo.backenddemolocation.controllers.users.UserService;
 import fr.farmeurimmo.backenddemolocation.dtos.locations.CreateLocationDTO;
 import fr.farmeurimmo.backenddemolocation.dtos.locations.Location;
+import fr.farmeurimmo.backenddemolocation.dtos.locations.UpdatedLocation;
 import fr.farmeurimmo.backenddemolocation.dtos.users.User;
 import fr.farmeurimmo.backenddemolocation.utils.UuidUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +78,27 @@ public class LocationController {
         locationService.deleteLocation(locationUuid);
 
         return ResponseEntity.status(204).body("Location deleted");
+    }
+
+    @PutMapping(path = "/{uuid}")
+    public ResponseEntity<?> updateLocation(@PathVariable String uuid, @RequestBody UpdatedLocation updatedLocation) {
+        if (uuid == null) {
+            return ResponseEntity.status(400).body("Invalid UUID");
+        }
+
+        UUID locationUuid = UuidUtils.convertHexToUUID(uuid);
+
+        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Location location = locationService.getLocationByUUID(locationUuid);
+
+        if (location == null) {
+            return ResponseEntity.status(404).body("Location not found");
+        }
+
+        if (!authenticatedUser.getUuid().equals(location.getUserUuid())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to update this location");
+        }
+
+        return ResponseEntity.ok(locationService.updateLocation(locationUuid, updatedLocation));
     }
 }
