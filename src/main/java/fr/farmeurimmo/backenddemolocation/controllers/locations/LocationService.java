@@ -49,6 +49,11 @@ public class LocationService {
     }
 
     @Transactional
+    public Location getLocationByUUID(UUID uuid) {
+        return locationRepository.findById(uuid).orElse(null);
+    }
+
+    @Transactional
     public void deleteLocation(UUID uuid) {
         locationRepository.deleteById(uuid);
     }

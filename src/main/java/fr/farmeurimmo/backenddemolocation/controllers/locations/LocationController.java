@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/locations")
@@ -60,16 +61,21 @@ public class LocationController {
             return ResponseEntity.status(400).body("Invalid UUID");
         }
 
-        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Iterable<Location> locations = locationService.getLocationsByUserUUID(authenticatedUser.getUuid());
+        UUID locationUuid = UuidUtils.convertHexToUUID(uuid);
 
-        for (Location location : locations) {
-            if (location.getUuid().equals(UuidUtils.convertHexToUUID(uuid))) {
-                locationService.deleteLocation(location.getUuid());
-                return ResponseEntity.status(200).body("Location deleted");
-            }
+        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Location location = locationService.getLocationByUUID(locationUuid);
+
+        if (location == null) {
+            return ResponseEntity.status(404).body("Location not found");
         }
 
-        return ResponseEntity.status(404).body("Location not found");
+        if (!authenticatedUser.getUuid().equals(location.getUserUuid())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to delete this location");
+        }
+
+        locationService.deleteLocation(locationUuid);
+
+        return ResponseEntity.status(204).body("Location deleted");
     }
 }
